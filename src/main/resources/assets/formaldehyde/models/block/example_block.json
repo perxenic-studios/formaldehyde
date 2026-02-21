@@ -1,6 +1,12 @@
 {
   "loader": "formaldehyde:continuous_texture",
     "textures": {
-        "particle": "formaldehyde:block/continuous_texture_test"
+        "particle": "formaldehyde:block/continuous_texture_test",
+        "north": "formaldehyde:block/continuous_texture_test",
+        "south": "formaldehyde:block/continuous_texture_test",
+        "west": "formaldehyde:block/continuous_texture_test",
+        "east": "formaldehyde:block/continuous_texture_test",
+        "down": "formaldehyde:block/continuous_texture_test",
+        "up": "formaldehyde:block/continuous_texture_test"
     }
 }

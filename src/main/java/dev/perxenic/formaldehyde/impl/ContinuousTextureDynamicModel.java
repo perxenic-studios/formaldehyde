@@ -31,17 +31,36 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
     private final int TEX_BLOCK_SIZE = 4;
 
-    private final float minU;
-    private final float maxU;
-    private final float uStep;
-    private final float minV;
-    private final float maxV;
-    private final float vStep;
-
     private final boolean useAmbientOcclusion;
     private final boolean isGui3d;
     private final boolean usesBlockLight;
+
     private final TextureAtlasSprite particle;
+
+    private final TextureAtlasSprite north;
+    private final float northUStep;
+    private final float northVStep;
+
+    private final TextureAtlasSprite south;
+    private final float southUStep;
+    private final float southVStep;
+
+    private final TextureAtlasSprite west;
+    private final float westUStep;
+    private final float westVStep;
+
+    private final TextureAtlasSprite east;
+    private final float eastUStep;
+    private final float eastVStep;
+
+    private final TextureAtlasSprite down;
+    private final float downUStep;
+    private final float downVStep;
+
+    private final TextureAtlasSprite up;
+    private final float upUStep;
+    private final float upVStep;
+
     private final ItemOverrides overrides;
 
     public ContinuousTextureDynamicModel(
@@ -49,20 +68,44 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
             boolean isGui3d,
             boolean usesBlockLight,
             TextureAtlasSprite particle,
+            TextureAtlasSprite north,
+            TextureAtlasSprite south,
+            TextureAtlasSprite west,
+            TextureAtlasSprite east,
+            TextureAtlasSprite down,
+            TextureAtlasSprite up,
             ItemOverrides overrides
     ) {
         this.useAmbientOcclusion = useAmbientOcclusion;
         this.isGui3d = isGui3d;
         this.usesBlockLight = usesBlockLight;
         this.particle = particle;
-        this.overrides = overrides;
-        minU = particle.getU0();
-        uStep = (particle.getU1() - minU) / TEX_BLOCK_SIZE;
-        maxU = minU + uStep * BLOCK_WIDTH_X;
 
-        minV = particle.getV0();
-        vStep = (particle.getV1() - minV) / TEX_BLOCK_SIZE;
-        maxV = minV + vStep * BLOCK_WIDTH_Y;
+        this.north = north;
+        this.northUStep = (north.getU1() - north.getU0()) / TEX_BLOCK_SIZE;
+        this.northVStep = (north.getV1() - north.getV0()) / TEX_BLOCK_SIZE;
+
+        this.south = south;
+        this.southUStep = (south.getU1() - south.getU0()) / TEX_BLOCK_SIZE;
+        this.southVStep = (south.getV1() - south.getV0()) / TEX_BLOCK_SIZE;
+
+        this.west = west;
+        this.westUStep = (west.getU1() - west.getU0()) / TEX_BLOCK_SIZE;
+        this.westVStep = (west.getV1() - west.getV0()) / TEX_BLOCK_SIZE;
+
+        this.east = east;
+        this.eastUStep = (east.getU1() - east.getU0()) / TEX_BLOCK_SIZE;
+        this.eastVStep = (east.getV1() - east.getV0()) / TEX_BLOCK_SIZE;
+
+        this.down = down;
+        this.downUStep = (down.getU1() - down.getU0()) / TEX_BLOCK_SIZE;
+        this.downVStep = (down.getV1() - down.getV0()) / TEX_BLOCK_SIZE;
+
+        this.up = up;
+        this.upUStep = (up.getU1() - up.getU0()) / TEX_BLOCK_SIZE;
+        this.upVStep = (up.getV1() - up.getV0()) / TEX_BLOCK_SIZE;
+
+        this.overrides = overrides;
     }
 
     @Override
@@ -136,15 +179,15 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     }
 
     public BakedQuad northQuad(int uOffset, int vOffset) {
-        var u0 = minU + uStep * uOffset;
-        var u1 = u0 + uStep;
+        var u0 = north.getU0() + northUStep * uOffset;
+        var u1 = u0 + northUStep;
 
-        var v0 = minV + vStep * vOffset;
-        var v1 = v0 + vStep;
+        var v0 = north.getV0() + northVStep * vOffset;
+        var v1 = v0 + northVStep;
 
         var vc = new QuadBakingVertexConsumer();
 
-        vc.setSprite(particle);
+        vc.setSprite(north);
         vc.setShade(true);
         vc.setDirection(Direction.NORTH);
         vc.setTintIndex(0);
@@ -174,15 +217,16 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     }
 
     public BakedQuad southQuad(int uOffset, int vOffset) {
-        var u0 = maxU - uStep * (BLOCK_WIDTH_X - uOffset - 1);
-        var u1 = u0 - uStep;
+        // Flip texture horizontally for south quad
+        var u1 = south.getU0() + southUStep * uOffset;
+        var u0 = u1 + southUStep;
 
-        var v0 = minV + vStep * vOffset;
-        var v1 = v0 + vStep;
+        var v0 = south.getV0() + southVStep * vOffset;
+        var v1 = v0 + southVStep;
 
         var vc = new QuadBakingVertexConsumer();
 
-        vc.setSprite(particle);
+        vc.setSprite(south);
         vc.setShade(true);
         vc.setDirection(Direction.SOUTH);
         vc.setTintIndex(0);
@@ -212,16 +256,15 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     }
 
     public BakedQuad westQuad(int uOffset, int vOffset) {
+        var u0 = west.getU0() + westUStep * uOffset;
+        var u1 = u0 + westUStep;
 
-        var u0 = minU + uStep * uOffset;
-        var u1 = u0 + uStep;
-
-        var v0 = minV + vStep * vOffset;
-        var v1 = v0 + vStep;
+        var v0 = west.getV0() + westVStep * vOffset;
+        var v1 = v0 + westVStep;
 
         var vc = new QuadBakingVertexConsumer();
 
-        vc.setSprite(particle);
+        vc.setSprite(west);
         vc.setShade(true);
         vc.setDirection(Direction.WEST);
         vc.setTintIndex(0);
@@ -251,16 +294,16 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     }
 
     public BakedQuad eastQuad(int uOffset, int vOffset) {
+        // Flip texture horizontally for east quad
+        var u1 = east.getU0() + eastUStep * uOffset;
+        var u0 = u1 + eastUStep;
 
-        var u0 = maxU - uStep * (BLOCK_WIDTH_X - uOffset - 1);
-        var u1 = u0 - uStep;
-
-        var v0 = minV + vStep * vOffset;
-        var v1 = v0 + vStep;
+        var v0 = east.getV0() + eastVStep * vOffset;
+        var v1 = v0 + eastVStep;
 
         var vc = new QuadBakingVertexConsumer();
 
-        vc.setSprite(particle);
+        vc.setSprite(east);
         vc.setShade(true);
         vc.setDirection(Direction.EAST);
         vc.setTintIndex(0);
@@ -290,15 +333,16 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     }
 
     public BakedQuad downQuad(int uOffset, int vOffset) {
-        var u0 = maxU - uStep * (BLOCK_WIDTH_X - uOffset - 1);
-        var u1 = u0 - uStep;
+        // Flip texture horizontally for down quad
+        var u1 = down.getU0() + downUStep * uOffset;
+        var u0 = u1 + downUStep;
 
-        var v0 = minV + vStep * vOffset;
-        var v1 = v0 + vStep;
+        var v0 = down.getV0() + downVStep * vOffset;
+        var v1 = v0 + downVStep;
 
         var vc = new QuadBakingVertexConsumer();
 
-        vc.setSprite(particle);
+        vc.setSprite(down);
         vc.setShade(true);
         vc.setDirection(Direction.DOWN);
         vc.setTintIndex(0);
@@ -328,15 +372,15 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     }
 
     public BakedQuad upQuad(int uOffset, int vOffset) {
-        var u0 = minU + uStep * uOffset;
-        var u1 = u0 + uStep;
+        var u0 = up.getU0() + upUStep * uOffset;
+        var u1 = u0 + upUStep;
 
-        var v0 = minV + vStep * vOffset;
-        var v1 = v0 + vStep;
+        var v0 = up.getV0() + upVStep * vOffset;
+        var v1 = v0 + upVStep;
 
         var vc = new QuadBakingVertexConsumer();
 
-        vc.setSprite(particle);
+        vc.setSprite(up);
         vc.setShade(true);
         vc.setDirection(Direction.UP);
         vc.setTintIndex(0);

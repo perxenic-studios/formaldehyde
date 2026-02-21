@@ -17,7 +17,18 @@ public class ContinuousTextureGeometry implements IUnbakedGeometry<ContinuousTex
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
-        return new ContinuousTextureDynamicModel(context.useAmbientOcclusion(), context.isGui3d(), context.useBlockLight(),
-                spriteGetter.apply(context.getMaterial("particle")), overrides);
+        return new ContinuousTextureDynamicModel(
+                context.useAmbientOcclusion(),
+                context.isGui3d(),
+                context.useBlockLight(),
+                spriteGetter.apply(context.getMaterial("particle")),
+                spriteGetter.apply(context.getMaterial("north")),
+                spriteGetter.apply(context.getMaterial("south")),
+                spriteGetter.apply(context.getMaterial("west")),
+                spriteGetter.apply(context.getMaterial("east")),
+                spriteGetter.apply(context.getMaterial("down")),
+                spriteGetter.apply(context.getMaterial("up")),
+                overrides
+        );
     }
 }
