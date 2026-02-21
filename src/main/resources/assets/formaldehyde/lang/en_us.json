@@ -1,0 +1,13 @@
+{
+  "itemGroup.formaldehyde": "Example Mod Tab",
+  "block.formaldehyde.example_block": "Example Block",
+  "item.formaldehyde.example_item": "Example Item",
+
+  "formaldehyde.configuration.title": "Formaldehyde Configs",
+  "formaldehyde.configuration.section.formaldehyde.common.toml": "Formaldehyde Configs",
+  "formaldehyde.configuration.section.formaldehyde.common.toml.title": "Formaldehyde Configs",
+  "formaldehyde.configuration.items": "Item List",
+  "formaldehyde.configuration.logDirtBlock": "Log Dirt Block",
+  "formaldehyde.configuration.magicNumberIntroduction": "Magic Number Text",
+  "formaldehyde.configuration.magicNumber": "Magic Number"
+}
