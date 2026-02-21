@@ -31,6 +31,14 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
     private final TextureAtlasSprite particle;
 
+    private final TextureAtlasSprite downSprite;
+    private final float downUStep;
+    private final float downVStep;
+
+    private final TextureAtlasSprite upSprite;
+    private final float upUStep;
+    private final float upVStep;
+
     private final TextureAtlasSprite northSprite;
     private final float northUStep;
     private final float northVStep;
@@ -47,14 +55,6 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     private final float westUStep;
     private final float westVStep;
 
-    private final TextureAtlasSprite upSprite;
-    private final float upUStep;
-    private final float upVStep;
-
-    private final TextureAtlasSprite downSprite;
-    private final float downUStep;
-    private final float downVStep;
-
     private final DirectionTileSize directionTileSize;
 
     private final ItemOverrides overrides;
@@ -64,12 +64,12 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
             boolean isGui3d,
             boolean usesBlockLight,
             TextureAtlasSprite particle,
+            TextureAtlasSprite downSprite,
+            TextureAtlasSprite upSprite,
             TextureAtlasSprite northSprite,
             TextureAtlasSprite eastSprite,
             TextureAtlasSprite southSprite,
             TextureAtlasSprite westSprite,
-            TextureAtlasSprite upSprite,
-            TextureAtlasSprite downSprite,
             DirectionTextureSize directionTextureSize,
             DirectionTileSize directionTileSize,
             ItemOverrides overrides
@@ -78,6 +78,14 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         this.isGui3d = isGui3d;
         this.usesBlockLight = usesBlockLight;
         this.particle = particle;
+
+        this.downSprite = downSprite;
+        this.downUStep = (downSprite.getU1() - downSprite.getU0()) / directionTextureSize.down;
+        this.downVStep = (downSprite.getV1() - downSprite.getV0()) / directionTextureSize.down;
+
+        this.upSprite = upSprite;
+        this.upUStep = (upSprite.getU1() - upSprite.getU0()) / directionTextureSize.up;
+        this.upVStep = (upSprite.getV1() - upSprite.getV0()) / directionTextureSize.up;
 
         this.northSprite = northSprite;
         this.northUStep = (northSprite.getU1() - northSprite.getU0()) / directionTextureSize.north;
@@ -94,14 +102,6 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         this.westSprite = westSprite;
         this.westUStep = (westSprite.getU1() - westSprite.getU0()) / directionTextureSize.west;
         this.westVStep = (westSprite.getV1() - westSprite.getV0()) / directionTextureSize.west;
-
-        this.upSprite = upSprite;
-        this.upUStep = (upSprite.getU1() - upSprite.getU0()) / directionTextureSize.up;
-        this.upVStep = (upSprite.getV1() - upSprite.getV0()) / directionTextureSize.up;
-
-        this.downSprite = downSprite;
-        this.downUStep = (downSprite.getU1() - downSprite.getU0()) / directionTextureSize.down;
-        this.downVStep = (downSprite.getV1() - downSprite.getV0()) / directionTextureSize.down;
 
         this.directionTileSize = directionTileSize;
 
@@ -157,6 +157,36 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         List<BakedQuad> quads = new ArrayList<>();
 
         if (side == null) return quads;
+
+        if (side == Direction.DOWN) {
+            float u0 = downSprite.getU0() + downUStep * Math.floorMod(-pos.getX(), directionTileSize.downU);
+            float v0 = downSprite.getV0() + downVStep * Math.floorMod(pos.getZ(), directionTileSize.downV);
+
+            quads.add(QuadBaker.downQuad(
+                    downSprite,
+                    true,
+                    0,
+                    useAmbientOcclusion(),
+                    0xFFFFFFFF,
+                    u0, u0 + downUStep,
+                    v0, v0 + downVStep
+            ));
+        }
+
+        if (side == Direction.UP) {
+            float u0 = upSprite.getU0() + upUStep * Math.floorMod(pos.getX(), directionTileSize.upU);
+            float v0 = upSprite.getV0() + upVStep * Math.floorMod(pos.getZ() - 1, directionTileSize.upV);
+
+            quads.add(QuadBaker.upQuad(
+                    upSprite,
+                    true,
+                    0,
+                    useAmbientOcclusion(),
+                    0xFFFFFFFF,
+                    u0, u0 + upUStep,
+                    v0, v0 + upVStep
+            ));
+        }
 
         if (side == Direction.NORTH) {
             float u0 = northSprite.getU0() + northUStep * Math.floorMod(-pos.getX() - 1, directionTileSize.northU);
@@ -215,36 +245,6 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
                     0xFFFFFFFF,
                     u0, u0 + westUStep,
                     v0, v0 + westVStep
-            ));
-        }
-
-        if (side == Direction.UP) {
-            float u0 = upSprite.getU0() + upUStep * Math.floorMod(pos.getX(), directionTileSize.upU);
-            float v0 = upSprite.getV0() + upVStep * Math.floorMod(pos.getZ() - 1, directionTileSize.upV);
-
-            quads.add(QuadBaker.upQuad(
-                    upSprite,
-                    true,
-                    0,
-                    useAmbientOcclusion(),
-                    0xFFFFFFFF,
-                    u0, u0 + upUStep,
-                    v0, v0 + upVStep
-            ));
-        }
-
-        if (side == Direction.DOWN) {
-            float u0 = downSprite.getU0() + downUStep * Math.floorMod(-pos.getX(), directionTileSize.downU);
-            float v0 = downSprite.getV0() + downVStep * Math.floorMod(pos.getZ(), directionTileSize.downV);
-
-            quads.add(QuadBaker.downQuad(
-                    downSprite,
-                    true,
-                    0,
-                    useAmbientOcclusion(),
-                    0xFFFFFFFF,
-                    u0, u0 + downUStep,
-                    v0, v0 + downVStep
             ));
         }
 
