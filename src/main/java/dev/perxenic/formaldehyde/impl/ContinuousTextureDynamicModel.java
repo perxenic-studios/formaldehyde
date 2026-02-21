@@ -153,6 +153,7 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
             @Nullable RenderType renderType
     ) {
         BlockPos pos = modelData.get(BLOCK_POS_PROPERTY);
+        if (pos == null) pos = new BlockPos(0, 0, 0);
 
         List<BakedQuad> quads = new ArrayList<>();
 
