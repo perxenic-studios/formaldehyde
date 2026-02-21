@@ -235,8 +235,8 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
     public BakedQuad southQuad(int uOffset, int vOffset) {
         // Flip texture horizontally for south quad
-        var u1 = south.getU0() + southUStep * uOffset;
-        var u0 = u1 + southUStep;
+        var u0 = south.getU0() + southUStep * (directionTileSize.southU - uOffset - 1);
+        var u1 = u0 + southUStep;
 
         var v0 = south.getV0() + southVStep * vOffset;
         var v1 = v0 + southVStep;
@@ -312,8 +312,9 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
     public BakedQuad eastQuad(int uOffset, int vOffset) {
         // Flip texture horizontally for east quad
-        var u1 = east.getU0() + eastUStep * uOffset;
-        var u0 = u1 + eastUStep;
+        var u0 = east.getU0() + eastUStep * (directionTileSize.eastU - uOffset - 1);
+        var u1 = u0 + eastUStep;
+
 
         var v0 = east.getV0() + eastVStep * vOffset;
         var v1 = v0 + eastVStep;
@@ -351,8 +352,8 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
     public BakedQuad downQuad(int uOffset, int vOffset) {
         // Flip texture horizontally for down quad
-        var u1 = down.getU0() + downUStep * uOffset;
-        var u0 = u1 + downUStep;
+        var u0 = down.getU0() + downUStep * (directionTileSize.downU - uOffset - 1);
+        var u1 = u0 + downUStep;
 
         var v0 = down.getV0() + downVStep * vOffset;
         var v1 = v0 + downVStep;
