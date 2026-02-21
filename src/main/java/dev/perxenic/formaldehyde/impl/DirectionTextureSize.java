@@ -12,19 +12,19 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @FieldsAreNonnullByDefault
 public class DirectionTextureSize {
     public final int north;
+    public final int east;
     public final int south;
     public final int west;
-    public final int east;
-    public final int down;
     public final int up;
+    public final int down;
 
-    public DirectionTextureSize(int north, int south, int west, int east, int down, int up) {
+    public DirectionTextureSize(int north, int east, int south, int west, int up, int down) {
         this.north = north;
+        this.east = east;
         this.south = south;
         this.west = west;
-        this.east = east;
-        this.down = down;
         this.up = up;
+        this.down = down;
     }
 
     public DirectionTextureSize(JsonObject object) throws JsonParseException {
@@ -32,6 +32,12 @@ public class DirectionTextureSize {
             north = object.getAsJsonPrimitive("north").getAsInt();
         } catch (Exception e) {
             throw new JsonParseException("Property 'north' is not present or not a valid integer", e);
+        }
+
+        try {
+            east = object.getAsJsonPrimitive("east").getAsInt();
+        } catch (Exception e) {
+            throw new JsonParseException("Property 'east' is not present or not a valid integer", e);
         }
 
         try {
@@ -47,21 +53,15 @@ public class DirectionTextureSize {
         }
 
         try {
-            east = object.getAsJsonPrimitive("east").getAsInt();
+            up = object.getAsJsonPrimitive("up").getAsInt();
         } catch (Exception e) {
-            throw new JsonParseException("Property 'east' is not present or not a valid integer", e);
+            throw new JsonParseException("Property 'up' is not present or not a valid integer", e);
         }
 
         try {
             down = object.getAsJsonPrimitive("down").getAsInt();
         } catch (Exception e) {
             throw new JsonParseException("Property 'down' is not present or not a valid integer", e);
-        }
-
-        try {
-            up = object.getAsJsonPrimitive("up").getAsInt();
-        } catch (Exception e) {
-            throw new JsonParseException("Property 'up' is not present or not a valid integer", e);
         }
     }
 }

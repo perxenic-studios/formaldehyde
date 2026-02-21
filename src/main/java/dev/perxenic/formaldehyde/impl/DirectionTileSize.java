@@ -7,41 +7,46 @@ public class DirectionTileSize {
     public final int northU;
     public final int northV;
 
+    public final int eastU;
+    public final int eastV;
+
     public final int southU;
     public final int southV;
 
     public final int westU;
     public final int westV;
 
-    public final int eastU;
-    public final int eastV;
+    public final int upU;
+    public final int upV;
 
     public final int downU;
     public final int downV;
 
-    public final int upU;
-    public final int upV;
-
     public DirectionTileSize(
             int northU, int northV,
+            int eastU, int eastV,
             int southU, int southV,
             int westU, int westV,
-            int eastU, int eastV,
-            int downU, int downV,
-            int upU, int upV
+            int upU, int upV,
+            int downU, int downV
     ) {
         this.northU = northU;
         this.northV = northV;
-        this.southU = southU;
-        this.southV = southV;
-        this.westU = westU;
-        this.westV = westV;
+
         this.eastU = eastU;
         this.eastV = eastV;
-        this.downU = downU;
-        this.downV = downV;
+
+        this.southU = southU;
+        this.southV = southV;
+
+        this.westU = westU;
+        this.westV = westV;
+
         this.upU = upU;
         this.upV = upV;
+
+        this.downU = downU;
+        this.downV = downV;
     }
 
     public DirectionTileSize(JsonObject object) throws JsonParseException {
@@ -51,6 +56,14 @@ public class DirectionTileSize {
             northV = north.get(1).getAsInt();
         } catch (Exception e) {
             throw new JsonParseException("Property 'north' is not present or not a valid integer array", e);
+        }
+
+        try {
+            var east = object.getAsJsonArray("east");
+            eastU = east.get(0).getAsInt();
+            eastV = east.get(1).getAsInt();
+        } catch (Exception e) {
+            throw new JsonParseException("Property 'east' is not present or not a valid integer array", e);
         }
 
         try {
@@ -70,11 +83,11 @@ public class DirectionTileSize {
         }
 
         try {
-            var east = object.getAsJsonArray("east");
-            eastU = east.get(0).getAsInt();
-            eastV = east.get(1).getAsInt();
+            var up = object.getAsJsonArray("up");
+            upU = up.get(0).getAsInt();
+            upV = up.get(1).getAsInt();
         } catch (Exception e) {
-            throw new JsonParseException("Property 'east' is not present or not a valid integer array", e);
+            throw new JsonParseException("Property 'up' is not present or not a valid integer array", e);
         }
 
         try {
@@ -83,14 +96,6 @@ public class DirectionTileSize {
             downV = down.get(1).getAsInt();
         } catch (Exception e) {
             throw new JsonParseException("Property 'down' is not present or not a valid integer array", e);
-        }
-
-        try {
-            var up = object.getAsJsonArray("up");
-            upU = up.get(0).getAsInt();
-            upV = up.get(1).getAsInt();
-        } catch (Exception e) {
-            throw new JsonParseException("Property 'up' is not present or not a valid integer array", e);
         }
     }
 }

@@ -3,26 +3,26 @@
     "textures": {
       "particle": "formaldehyde:block/continuous_texture_test",
       "north": "formaldehyde:block/continuous_texture_test",
+      "east": "formaldehyde:block/continuous_texture_test_side",
       "south": "formaldehyde:block/continuous_texture_test",
       "west": "formaldehyde:block/continuous_texture_test_side",
-      "east": "formaldehyde:block/continuous_texture_test_side",
-      "down": "formaldehyde:block/continuous_texture_test",
-      "up": "formaldehyde:block/continuous_texture_test"
+      "up": "formaldehyde:block/continuous_texture_test",
+      "down": "formaldehyde:block/continuous_texture_test"
     },
     "texture_size": {
       "north": 4,
+      "east": 2,
       "south": 4,
       "west": 2,
-      "east": 2,
-      "down": 4,
-      "up": 4
+      "up": 4,
+      "down": 4
     },
     "tile_size": {
       "north": [3, 2],
+      "east": [2, 2],
       "south": [3, 2],
       "west": [2, 2],
-      "east": [2, 2],
-      "down": [3, 2],
-      "up": [3, 2]
+      "up": [3, 2],
+      "down": [3, 2]
     }
 }

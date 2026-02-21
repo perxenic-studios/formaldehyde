@@ -29,11 +29,11 @@ public class ContinuousTextureGeometry implements IUnbakedGeometry<ContinuousTex
                 context.useBlockLight(),
                 spriteGetter.apply(context.getMaterial("particle")),
                 spriteGetter.apply(context.getMaterial("north")),
+                spriteGetter.apply(context.getMaterial("east")),
                 spriteGetter.apply(context.getMaterial("south")),
                 spriteGetter.apply(context.getMaterial("west")),
-                spriteGetter.apply(context.getMaterial("east")),
-                spriteGetter.apply(context.getMaterial("down")),
                 spriteGetter.apply(context.getMaterial("up")),
+                spriteGetter.apply(context.getMaterial("down")),
                 directionTextureSize,
                 directionTileSize,
                 overrides

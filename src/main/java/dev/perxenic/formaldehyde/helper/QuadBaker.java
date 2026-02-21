@@ -83,6 +83,33 @@ public class QuadBaker {
             1, 1, 1
     };
 
+    public final static float[] EAST_VERTICES = {
+            1, 1, 1,
+            1, 0, 1,
+            1, 0, 0,
+            1, 1, 0,
+    };
+
+    public final static float[] EAST_NORMAL = {1, 0, 0};
+
+    public static BakedQuad eastQuad(
+            TextureAtlasSprite sprite,
+            boolean shade,
+            int tintIndex,
+            boolean ambientOcclusion,
+            int color,
+            float u0, float u1,
+            float v0, float v1
+    ) {
+        return quad(
+                sprite, shade, tintIndex, ambientOcclusion, color,
+                u0, u1, v0, v1,
+                Direction.EAST,
+                EAST_VERTICES,
+                EAST_NORMAL
+        );
+    }
+
     public final static float[] SOUTH_NORMAL = {0, 0, 1};
 
     public static BakedQuad southQuad(
@@ -130,16 +157,16 @@ public class QuadBaker {
         );
     }
 
-    public final static float[] EAST_VERTICES = {
+    public final static float[] UP_VERTICES = {
+            0, 1, 0,
+            0, 1, 1,
             1, 1, 1,
-            1, 0, 1,
-            1, 0, 0,
             1, 1, 0,
     };
 
-    public final static float[] EAST_NORMAL = {1, 0, 0};
+    public final static float[] UP_NORMAL = {0, 1, 0};
 
-    public static BakedQuad eastQuad(
+    public static BakedQuad upQuad(
             TextureAtlasSprite sprite,
             boolean shade,
             int tintIndex,
@@ -151,9 +178,9 @@ public class QuadBaker {
         return quad(
                 sprite, shade, tintIndex, ambientOcclusion, color,
                 u0, u1, v0, v1,
-                Direction.EAST,
-                EAST_VERTICES,
-                EAST_NORMAL
+                Direction.UP,
+                UP_VERTICES,
+                UP_NORMAL
         );
     }
 
@@ -181,33 +208,6 @@ public class QuadBaker {
                 Direction.DOWN,
                 DOWN_VERTICES,
                 DOWN_NORMAL
-        );
-    }
-
-    public final static float[] UP_VERTICES = {
-            0, 1, 0,
-            0, 1, 1,
-            1, 1, 1,
-            1, 1, 0,
-    };
-
-    public final static float[] UP_NORMAL = {0, 1, 0};
-
-    public static BakedQuad upQuad(
-            TextureAtlasSprite sprite,
-            boolean shade,
-            int tintIndex,
-            boolean ambientOcclusion,
-            int color,
-            float u0, float u1,
-            float v0, float v1
-    ) {
-        return quad(
-                sprite, shade, tintIndex, ambientOcclusion, color,
-                u0, u1, v0, v1,
-                Direction.UP,
-                UP_VERTICES,
-                UP_NORMAL
         );
     }
 }
