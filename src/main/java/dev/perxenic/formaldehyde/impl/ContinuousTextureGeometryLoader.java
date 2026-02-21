@@ -23,6 +23,14 @@ public class ContinuousTextureGeometryLoader implements IGeometryLoader<Continuo
 
     @Override
     public ContinuousTextureGeometry read(JsonObject jsonObject, JsonDeserializationContext context) throws JsonParseException {
-        return new ContinuousTextureGeometry();
+        if (!jsonObject.get("texture_size").isJsonObject())
+            throw new JsonParseException("Property 'texture_size' was not a json object");
+        if (!jsonObject.get("tile_size").isJsonObject())
+            throw new JsonParseException("Property 'tile_size' was not a json object");
+
+        return new ContinuousTextureGeometry(
+                new DirectionTextureSize(jsonObject.get("texture_size").getAsJsonObject()),
+                new DirectionTileSize(jsonObject.get("tile_size").getAsJsonObject())
+        );
     }
 }

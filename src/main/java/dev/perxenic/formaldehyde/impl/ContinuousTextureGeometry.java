@@ -13,7 +13,13 @@ import java.util.function.Function;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ContinuousTextureGeometry implements IUnbakedGeometry<ContinuousTextureGeometry> {
-    public ContinuousTextureGeometry() {}
+    private final DirectionTextureSize directionTextureSize;
+    private final DirectionTileSize directionTileSize;
+
+    public ContinuousTextureGeometry(DirectionTextureSize directionTextureSize, DirectionTileSize directionTileSize) {
+        this.directionTextureSize = directionTextureSize;
+        this.directionTileSize = directionTileSize;
+    }
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
@@ -28,6 +34,8 @@ public class ContinuousTextureGeometry implements IUnbakedGeometry<ContinuousTex
                 spriteGetter.apply(context.getMaterial("east")),
                 spriteGetter.apply(context.getMaterial("down")),
                 spriteGetter.apply(context.getMaterial("up")),
+                directionTextureSize,
+                directionTileSize,
                 overrides
         );
     }

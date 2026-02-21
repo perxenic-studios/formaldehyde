@@ -26,11 +26,6 @@ import java.util.List;
 public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     private static final ModelProperty<BlockPos> BLOCK_POS_PROPERTY = new ModelProperty<>();
 
-    private final int BLOCK_WIDTH_X = 4;
-    private final int BLOCK_WIDTH_Y = 4;
-
-    private final int TEX_BLOCK_SIZE = 4;
-
     private final boolean useAmbientOcclusion;
     private final boolean isGui3d;
     private final boolean usesBlockLight;
@@ -61,6 +56,8 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     private final float upUStep;
     private final float upVStep;
 
+    private final DirectionTileSize directionTileSize;
+
     private final ItemOverrides overrides;
 
     public ContinuousTextureDynamicModel(
@@ -74,6 +71,8 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
             TextureAtlasSprite east,
             TextureAtlasSprite down,
             TextureAtlasSprite up,
+            DirectionTextureSize directionTextureSize,
+            DirectionTileSize directionTileSize,
             ItemOverrides overrides
     ) {
         this.useAmbientOcclusion = useAmbientOcclusion;
@@ -82,28 +81,30 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         this.particle = particle;
 
         this.north = north;
-        this.northUStep = (north.getU1() - north.getU0()) / TEX_BLOCK_SIZE;
-        this.northVStep = (north.getV1() - north.getV0()) / TEX_BLOCK_SIZE;
+        this.northUStep = (north.getU1() - north.getU0()) / directionTextureSize.north;
+        this.northVStep = (north.getV1() - north.getV0()) / directionTextureSize.north;
 
         this.south = south;
-        this.southUStep = (south.getU1() - south.getU0()) / TEX_BLOCK_SIZE;
-        this.southVStep = (south.getV1() - south.getV0()) / TEX_BLOCK_SIZE;
+        this.southUStep = (south.getU1() - south.getU0()) / directionTextureSize.south;
+        this.southVStep = (south.getV1() - south.getV0()) / directionTextureSize.south;
 
         this.west = west;
-        this.westUStep = (west.getU1() - west.getU0()) / TEX_BLOCK_SIZE;
-        this.westVStep = (west.getV1() - west.getV0()) / TEX_BLOCK_SIZE;
+        this.westUStep = (west.getU1() - west.getU0()) / directionTextureSize.west;
+        this.westVStep = (west.getV1() - west.getV0()) / directionTextureSize.west;
 
         this.east = east;
-        this.eastUStep = (east.getU1() - east.getU0()) / TEX_BLOCK_SIZE;
-        this.eastVStep = (east.getV1() - east.getV0()) / TEX_BLOCK_SIZE;
+        this.eastUStep = (east.getU1() - east.getU0()) / directionTextureSize.east;
+        this.eastVStep = (east.getV1() - east.getV0()) / directionTextureSize.east;
 
         this.down = down;
-        this.downUStep = (down.getU1() - down.getU0()) / TEX_BLOCK_SIZE;
-        this.downVStep = (down.getV1() - down.getV0()) / TEX_BLOCK_SIZE;
+        this.downUStep = (down.getU1() - down.getU0()) / directionTextureSize.down;
+        this.downVStep = (down.getV1() - down.getV0()) / directionTextureSize.down;
 
         this.up = up;
-        this.upUStep = (up.getU1() - up.getU0()) / TEX_BLOCK_SIZE;
-        this.upVStep = (up.getV1() - up.getV0()) / TEX_BLOCK_SIZE;
+        this.upUStep = (up.getU1() - up.getU0()) / directionTextureSize.up;
+        this.upVStep = (up.getV1() - up.getV0()) / directionTextureSize.up;
+
+        this.directionTileSize = directionTileSize;
 
         this.overrides = overrides;
     }
@@ -161,19 +162,37 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         if (side == null) return quads;
 
         if (side == Direction.NORTH)
-            quads.add(northQuad(Math.floorMod(-pos.getX(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
+            quads.add(northQuad(
+                    Math.floorMod(-pos.getX(), directionTileSize.northU),
+                    Math.floorMod(pos.getY(), directionTileSize.northV)
+            ));
         if (side == Direction.SOUTH)
-            quads.add(southQuad(Math.floorMod(-pos.getX(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
+            quads.add(southQuad(
+                    Math.floorMod(-pos.getX(), directionTileSize.southU),
+                    Math.floorMod(pos.getY(), directionTileSize.southV)
+            ));
 
         if (side == Direction.WEST)
-            quads.add(westQuad(Math.floorMod(pos.getZ(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
+            quads.add(westQuad(
+                    Math.floorMod(pos.getZ(), directionTileSize.westU),
+                    Math.floorMod(pos.getY(), directionTileSize.westV)
+            ));
         if (side == Direction.EAST)
-            quads.add(eastQuad(Math.floorMod(pos.getZ(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
+            quads.add(eastQuad(
+                    Math.floorMod(pos.getZ(), directionTileSize.eastU),
+                    Math.floorMod(pos.getY(), directionTileSize.eastV)
+            ));
 
         if (side == Direction.DOWN)
-            quads.add(downQuad(Math.floorMod(pos.getZ(), BLOCK_WIDTH_X), Math.floorMod(pos.getX(), BLOCK_WIDTH_Y)));
+            quads.add(downQuad(
+                    Math.floorMod(pos.getZ(), directionTileSize.downU),
+                    Math.floorMod(pos.getX(), directionTileSize.downV)
+            ));
         if (side == Direction.UP)
-            quads.add(upQuad(Math.floorMod(pos.getZ(), BLOCK_WIDTH_X), Math.floorMod(pos.getX(), BLOCK_WIDTH_Y)));
+            quads.add(upQuad(
+                    Math.floorMod(pos.getZ(), directionTileSize.upU),
+                    Math.floorMod(pos.getX(), directionTileSize.upV)
+            ));
 
         return quads;
     }
