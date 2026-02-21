@@ -31,27 +31,27 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
     private final TextureAtlasSprite particle;
 
-    private final TextureAtlasSprite north;
+    private final TextureAtlasSprite northSprite;
     private final float northUStep;
     private final float northVStep;
 
-    private final TextureAtlasSprite east;
+    private final TextureAtlasSprite eastSprite;
     private final float eastUStep;
     private final float eastVStep;
 
-    private final TextureAtlasSprite south;
+    private final TextureAtlasSprite southSprite;
     private final float southUStep;
     private final float southVStep;
 
-    private final TextureAtlasSprite west;
+    private final TextureAtlasSprite westSprite;
     private final float westUStep;
     private final float westVStep;
 
-    private final TextureAtlasSprite up;
+    private final TextureAtlasSprite upSprite;
     private final float upUStep;
     private final float upVStep;
 
-    private final TextureAtlasSprite down;
+    private final TextureAtlasSprite downSprite;
     private final float downUStep;
     private final float downVStep;
 
@@ -64,12 +64,12 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
             boolean isGui3d,
             boolean usesBlockLight,
             TextureAtlasSprite particle,
-            TextureAtlasSprite north,
-            TextureAtlasSprite east,
-            TextureAtlasSprite south,
-            TextureAtlasSprite west,
-            TextureAtlasSprite up,
-            TextureAtlasSprite down,
+            TextureAtlasSprite northSprite,
+            TextureAtlasSprite eastSprite,
+            TextureAtlasSprite southSprite,
+            TextureAtlasSprite westSprite,
+            TextureAtlasSprite upSprite,
+            TextureAtlasSprite downSprite,
             DirectionTextureSize directionTextureSize,
             DirectionTileSize directionTileSize,
             ItemOverrides overrides
@@ -79,29 +79,29 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         this.usesBlockLight = usesBlockLight;
         this.particle = particle;
 
-        this.north = north;
-        this.northUStep = (north.getU1() - north.getU0()) / directionTextureSize.north;
-        this.northVStep = (north.getV1() - north.getV0()) / directionTextureSize.north;
+        this.northSprite = northSprite;
+        this.northUStep = (northSprite.getU1() - northSprite.getU0()) / directionTextureSize.north;
+        this.northVStep = (northSprite.getV1() - northSprite.getV0()) / directionTextureSize.north;
 
-        this.east = east;
-        this.eastUStep = (east.getU1() - east.getU0()) / directionTextureSize.east;
-        this.eastVStep = (east.getV1() - east.getV0()) / directionTextureSize.east;
+        this.eastSprite = eastSprite;
+        this.eastUStep = (eastSprite.getU1() - eastSprite.getU0()) / directionTextureSize.east;
+        this.eastVStep = (eastSprite.getV1() - eastSprite.getV0()) / directionTextureSize.east;
 
-        this.south = south;
-        this.southUStep = (south.getU1() - south.getU0()) / directionTextureSize.south;
-        this.southVStep = (south.getV1() - south.getV0()) / directionTextureSize.south;
+        this.southSprite = southSprite;
+        this.southUStep = (southSprite.getU1() - southSprite.getU0()) / directionTextureSize.south;
+        this.southVStep = (southSprite.getV1() - southSprite.getV0()) / directionTextureSize.south;
 
-        this.west = west;
-        this.westUStep = (west.getU1() - west.getU0()) / directionTextureSize.west;
-        this.westVStep = (west.getV1() - west.getV0()) / directionTextureSize.west;
+        this.westSprite = westSprite;
+        this.westUStep = (westSprite.getU1() - westSprite.getU0()) / directionTextureSize.west;
+        this.westVStep = (westSprite.getV1() - westSprite.getV0()) / directionTextureSize.west;
 
-        this.up = up;
-        this.upUStep = (up.getU1() - up.getU0()) / directionTextureSize.up;
-        this.upVStep = (up.getV1() - up.getV0()) / directionTextureSize.up;
+        this.upSprite = upSprite;
+        this.upUStep = (upSprite.getU1() - upSprite.getU0()) / directionTextureSize.up;
+        this.upVStep = (upSprite.getV1() - upSprite.getV0()) / directionTextureSize.up;
 
-        this.down = down;
-        this.downUStep = (down.getU1() - down.getU0()) / directionTextureSize.down;
-        this.downVStep = (down.getV1() - down.getV0()) / directionTextureSize.down;
+        this.downSprite = downSprite;
+        this.downUStep = (downSprite.getU1() - downSprite.getU0()) / directionTextureSize.down;
+        this.downVStep = (downSprite.getV1() - downSprite.getV0()) / directionTextureSize.down;
 
         this.directionTileSize = directionTileSize;
 
@@ -159,11 +159,11 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         if (side == null) return quads;
 
         if (side == Direction.NORTH) {
-            float u0 = north.getU0() + northUStep * Math.floorMod(-pos.getX() - 1, directionTileSize.northU);
-            float v0 = north.getV0() + northVStep * Math.floorMod(-pos.getY(), directionTileSize.northV);
+            float u0 = northSprite.getU0() + northUStep * Math.floorMod(-pos.getX() - 1, directionTileSize.northU);
+            float v0 = northSprite.getV0() + northVStep * Math.floorMod(-pos.getY(), directionTileSize.northV);
 
             quads.add(QuadBaker.northQuad(
-                    north,
+                    northSprite,
                     true,
                     0,
                     useAmbientOcclusion(),
@@ -174,11 +174,11 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         }
 
         if (side == Direction.EAST) {
-            float u0 = east.getU0() + eastUStep * Math.floorMod(-pos.getZ(), directionTileSize.eastU);
-            float v0 = east.getV0() + eastVStep * Math.floorMod(-pos.getY(), directionTileSize.eastV);
+            float u0 = eastSprite.getU0() + eastUStep * Math.floorMod(-pos.getZ(), directionTileSize.eastU);
+            float v0 = eastSprite.getV0() + eastVStep * Math.floorMod(-pos.getY(), directionTileSize.eastV);
 
             quads.add(QuadBaker.eastQuad(
-                    east,
+                    eastSprite,
                     true,
                     0,
                     useAmbientOcclusion(),
@@ -189,11 +189,11 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         }
 
         if (side == Direction.SOUTH) {
-            float u0 = south.getU0() + southUStep * Math.floorMod(pos.getX(), directionTileSize.southU);
-            float v0 = south.getV0() + southVStep * Math.floorMod(-pos.getY(), directionTileSize.southV);
+            float u0 = southSprite.getU0() + southUStep * Math.floorMod(pos.getX(), directionTileSize.southU);
+            float v0 = southSprite.getV0() + southVStep * Math.floorMod(-pos.getY(), directionTileSize.southV);
 
             quads.add(QuadBaker.southQuad(
-                    south,
+                    southSprite,
                     true,
                     0,
                     useAmbientOcclusion(),
@@ -204,11 +204,11 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         }
 
         if (side == Direction.WEST) {
-            float u0 = west.getU0() + westUStep * Math.floorMod(pos.getZ() - 1, directionTileSize.westU);
-            float v0 = west.getV0() + westVStep * Math.floorMod(-pos.getY(), directionTileSize.westV);
+            float u0 = westSprite.getU0() + westUStep * Math.floorMod(pos.getZ() - 1, directionTileSize.westU);
+            float v0 = westSprite.getV0() + westVStep * Math.floorMod(-pos.getY(), directionTileSize.westV);
 
             quads.add(QuadBaker.westQuad(
-                    west,
+                    westSprite,
                     true,
                     0,
                     useAmbientOcclusion(),
@@ -219,11 +219,11 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         }
 
         if (side == Direction.UP) {
-            float u0 = up.getU0() + upUStep * Math.floorMod(pos.getX(), directionTileSize.upU);
-            float v0 = up.getV0() + upVStep * Math.floorMod(pos.getZ() - 1, directionTileSize.upV);
+            float u0 = upSprite.getU0() + upUStep * Math.floorMod(pos.getX(), directionTileSize.upU);
+            float v0 = upSprite.getV0() + upVStep * Math.floorMod(pos.getZ() - 1, directionTileSize.upV);
 
             quads.add(QuadBaker.upQuad(
-                    up,
+                    upSprite,
                     true,
                     0,
                     useAmbientOcclusion(),
@@ -234,11 +234,11 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         }
 
         if (side == Direction.DOWN) {
-            float u0 = down.getU0() + downUStep * Math.floorMod(-pos.getX(), directionTileSize.downU);
-            float v0 = down.getV0() + downVStep * Math.floorMod(pos.getZ(), directionTileSize.downV);
+            float u0 = downSprite.getU0() + downUStep * Math.floorMod(-pos.getX(), directionTileSize.downU);
+            float v0 = downSprite.getV0() + downVStep * Math.floorMod(pos.getZ(), directionTileSize.downV);
 
             quads.add(QuadBaker.downQuad(
-                    down,
+                    downSprite,
                     true,
                     0,
                     useAmbientOcclusion(),
