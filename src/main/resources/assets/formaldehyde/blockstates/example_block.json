@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "formaldehyde:block/example_block"
+    }
+  }
+}
