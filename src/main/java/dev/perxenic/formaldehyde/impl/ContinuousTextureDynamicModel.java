@@ -153,8 +153,6 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
             ModelData modelData,
             @Nullable RenderType renderType
     ) {
-        // TODO: Temporary logging message, needs to be removed at some point
-        if (!modelData.has(BLOCK_POS_PROPERTY)) Formaldehyde.LOGGER.error("Block pos property not present!");
         BlockPos pos = modelData.get(BLOCK_POS_PROPERTY);
 
         List<BakedQuad> quads = new ArrayList<>();
