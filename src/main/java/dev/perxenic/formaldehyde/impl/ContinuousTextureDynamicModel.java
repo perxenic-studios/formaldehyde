@@ -115,11 +115,17 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
         List<BakedQuad> quads = new ArrayList<>();
 
-        quads.add(northQuad(Math.floorMod(pos.getX(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
-        quads.add(southQuad(Math.floorMod(pos.getX(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
+        if (side == null) return quads;
 
-        quads.add(eastQuad(Math.floorMod(pos.getZ(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
-        quads.add(westQuad(Math.floorMod(pos.getZ(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
+        if (side == Direction.NORTH)
+            quads.add(northQuad(Math.floorMod(pos.getX(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
+        if (side == Direction.SOUTH)
+            quads.add(southQuad(Math.floorMod(pos.getX(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
+
+        if (side == Direction.WEST)
+            quads.add(westQuad(Math.floorMod(pos.getZ(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
+        if (side == Direction.EAST)
+            quads.add(eastQuad(Math.floorMod(pos.getZ(), BLOCK_WIDTH_X), Math.floorMod(pos.getY(), BLOCK_WIDTH_Y)));
 
         return quads;
     }
@@ -200,45 +206,6 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         return vc.bakeQuad();
     }
 
-    public BakedQuad eastQuad(int uOffset, int vOffset) {
-
-        var u0 = maxU - uStep * (BLOCK_WIDTH_X - uOffset - 1);
-        var u1 = u0 - uStep;
-
-        var v0 = minV + vStep * vOffset;
-        var v1 = v0 + vStep;
-
-        var vc = new QuadBakingVertexConsumer();
-
-        vc.setSprite(particle);
-        vc.setShade(true);
-        vc.setDirection(Direction.EAST);
-        vc.setTintIndex(0);
-        vc.setHasAmbientOcclusion(useAmbientOcclusion());
-
-        vc.addVertex(1, 1, 1)
-                .setColor(0xFFFFFFFF)
-                .setUv(u0, v0)
-                .setNormal(1f, 0f, 0f);
-
-        vc.addVertex(1, 0, 1)
-                .setColor(0xFFFFFFFF)
-                .setUv(u0, v1)
-                .setNormal(1f, 0f, 0f);
-
-        vc.addVertex(1, 0, 0)
-                .setColor(0xFFFFFFFF)
-                .setUv(u1, v1)
-                .setNormal(1f, 0f, 0f);
-
-        vc.addVertex(1, 1, 0)
-                .setColor(0xFFFFFFFF)
-                .setUv(u1, v0)
-                .setNormal(1f, 0f, 0f);
-
-        return vc.bakeQuad();
-    }
-
     public BakedQuad westQuad(int uOffset, int vOffset) {
 
         var u0 = minU + uStep * uOffset;
@@ -274,6 +241,45 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
                 .setColor(0xFFFFFFFF)
                 .setUv(u1, v0)
                 .setNormal(-1f, 0f, 0f);
+
+        return vc.bakeQuad();
+    }
+
+    public BakedQuad eastQuad(int uOffset, int vOffset) {
+
+        var u0 = maxU - uStep * (BLOCK_WIDTH_X - uOffset - 1);
+        var u1 = u0 - uStep;
+
+        var v0 = minV + vStep * vOffset;
+        var v1 = v0 + vStep;
+
+        var vc = new QuadBakingVertexConsumer();
+
+        vc.setSprite(particle);
+        vc.setShade(true);
+        vc.setDirection(Direction.EAST);
+        vc.setTintIndex(0);
+        vc.setHasAmbientOcclusion(useAmbientOcclusion());
+
+        vc.addVertex(1, 1, 1)
+                .setColor(0xFFFFFFFF)
+                .setUv(u0, v0)
+                .setNormal(1f, 0f, 0f);
+
+        vc.addVertex(1, 0, 1)
+                .setColor(0xFFFFFFFF)
+                .setUv(u0, v1)
+                .setNormal(1f, 0f, 0f);
+
+        vc.addVertex(1, 0, 0)
+                .setColor(0xFFFFFFFF)
+                .setUv(u1, v1)
+                .setNormal(1f, 0f, 0f);
+
+        vc.addVertex(1, 1, 0)
+                .setColor(0xFFFFFFFF)
+                .setUv(u1, v0)
+                .setNormal(1f, 0f, 0f);
 
         return vc.bakeQuad();
     }
