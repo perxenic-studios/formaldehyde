@@ -1,7 +1,6 @@
 {
   "loader": "formaldehyde:continuous_texture",
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "minecraft:block/dirt"
-  }
+    "textures": {
+        "particle": "formaldehyde:block/continuous_texture_test"
+    }
 }
