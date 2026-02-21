@@ -26,8 +26,8 @@ import java.util.List;
 public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     private static final ModelProperty<BlockPos> BLOCK_POS_PROPERTY = new ModelProperty<>();
 
-    private final int BLOCK_WIDTH_X = 3;
-    private final int BLOCK_WIDTH_Y = 2;
+    private final int BLOCK_WIDTH_X = 4;
+    private final int BLOCK_WIDTH_Y = 4;
 
     private final int TEX_BLOCK_SIZE = 4;
 
