@@ -2,7 +2,7 @@
   "loader": "formaldehyde:continuous_texture",
   "parent": "minecraft:block/block",
     "textures": {
-      "particle": "minecraft:smooth_stone",
+      "particle": "minecraft:block/smooth_stone",
       "down": "formaldehyde:block/continuous_texture_test",
       "up": "formaldehyde:block/continuous_texture_test",
       "north": "formaldehyde:block/continuous_texture_test",

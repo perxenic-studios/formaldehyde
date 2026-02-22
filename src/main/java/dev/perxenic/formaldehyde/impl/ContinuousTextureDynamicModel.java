@@ -31,29 +31,12 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
     private final TextureAtlasSprite particle;
 
-    private final TextureAtlasSprite downSprite;
-    private final float downUStep;
-    private final float downVStep;
-
-    private final TextureAtlasSprite upSprite;
-    private final float upUStep;
-    private final float upVStep;
-
-    private final TextureAtlasSprite northSprite;
-    private final float northUStep;
-    private final float northVStep;
-
-    private final TextureAtlasSprite eastSprite;
-    private final float eastUStep;
-    private final float eastVStep;
-
-    private final TextureAtlasSprite southSprite;
-    private final float southUStep;
-    private final float southVStep;
-
-    private final TextureAtlasSprite westSprite;
-    private final float westUStep;
-    private final float westVStep;
+    private final BakedQuad[][] downQuads;
+    private final BakedQuad[][] upQuads;
+    private final BakedQuad[][] northQuads;
+    private final BakedQuad[][] eastQuads;
+    private final BakedQuad[][] southQuads;
+    private final BakedQuad[][] westQuads;
 
     private final DirectionTileSize directionTileSize;
 
@@ -64,13 +47,12 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
             boolean isGui3d,
             boolean usesBlockLight,
             TextureAtlasSprite particle,
-            TextureAtlasSprite downSprite,
-            TextureAtlasSprite upSprite,
-            TextureAtlasSprite northSprite,
-            TextureAtlasSprite eastSprite,
-            TextureAtlasSprite southSprite,
-            TextureAtlasSprite westSprite,
-            DirectionTextureSize directionTextureSize,
+            BakedQuad[][] downQuads,
+            BakedQuad[][] upQuads,
+            BakedQuad[][] northQuads,
+            BakedQuad[][] eastQuads,
+            BakedQuad[][] southQuads,
+            BakedQuad[][] westQuads,
             DirectionTileSize directionTileSize,
             ItemOverrides overrides
     ) {
@@ -78,30 +60,12 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         this.isGui3d = isGui3d;
         this.usesBlockLight = usesBlockLight;
         this.particle = particle;
-
-        this.downSprite = downSprite;
-        this.downUStep = (downSprite.getU1() - downSprite.getU0()) / directionTextureSize.down;
-        this.downVStep = (downSprite.getV1() - downSprite.getV0()) / directionTextureSize.down;
-
-        this.upSprite = upSprite;
-        this.upUStep = (upSprite.getU1() - upSprite.getU0()) / directionTextureSize.up;
-        this.upVStep = (upSprite.getV1() - upSprite.getV0()) / directionTextureSize.up;
-
-        this.northSprite = northSprite;
-        this.northUStep = (northSprite.getU1() - northSprite.getU0()) / directionTextureSize.north;
-        this.northVStep = (northSprite.getV1() - northSprite.getV0()) / directionTextureSize.north;
-
-        this.eastSprite = eastSprite;
-        this.eastUStep = (eastSprite.getU1() - eastSprite.getU0()) / directionTextureSize.east;
-        this.eastVStep = (eastSprite.getV1() - eastSprite.getV0()) / directionTextureSize.east;
-
-        this.southSprite = southSprite;
-        this.southUStep = (southSprite.getU1() - southSprite.getU0()) / directionTextureSize.south;
-        this.southVStep = (southSprite.getV1() - southSprite.getV0()) / directionTextureSize.south;
-
-        this.westSprite = westSprite;
-        this.westUStep = (westSprite.getU1() - westSprite.getU0()) / directionTextureSize.west;
-        this.westVStep = (westSprite.getV1() - westSprite.getV0()) / directionTextureSize.west;
+        this.downQuads = downQuads;
+        this.upQuads = upQuads;
+        this.northQuads = northQuads;
+        this.eastQuads = eastQuads;
+        this.southQuads = southQuads;
+        this.westQuads = westQuads;
 
         this.directionTileSize = directionTileSize;
 
@@ -155,100 +119,42 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         BlockPos pos = modelData.get(BLOCK_POS_PROPERTY);
         if (pos == null) pos = new BlockPos(0, 0, 0);
 
-        List<BakedQuad> quads = new ArrayList<>();
+        if (side == Direction.DOWN) return List.of(
+                downQuads
+                    [Math.floorMod(pos.getX(), directionTileSize.downU)]
+                    [Math.floorMod(-pos.getZ(), directionTileSize.downV)]
+            );
 
-        if (side == null) return quads;
+        else if (side == Direction.UP) return List.of(
+                upQuads
+                    [Math.floorMod(pos.getX(), directionTileSize.upU)]
+                    [Math.floorMod(pos.getZ() - 1, directionTileSize.upV)]
+        );
 
-        if (side == Direction.DOWN) {
-            float u0 = downSprite.getU0() + downUStep * Math.floorMod(-pos.getX(), directionTileSize.downU);
-            float v0 = downSprite.getV0() + downVStep * Math.floorMod(pos.getZ(), directionTileSize.downV);
+        else if (side == Direction.NORTH) return List.of(
+                northQuads
+                    [Math.floorMod(-pos.getX() - 1, directionTileSize.northU)]
+                    [Math.floorMod(-pos.getY(), directionTileSize.northV)]
+        );
 
-            quads.add(QuadBaker.downQuad(
-                    downSprite,
-                    true,
-                    0,
-                    useAmbientOcclusion(),
-                    0xFFFFFFFF,
-                    u0, u0 + downUStep,
-                    v0, v0 + downVStep
-            ));
-        }
+        else if (side == Direction.EAST) return List.of(
+                eastQuads
+                    [Math.floorMod(-pos.getZ(), directionTileSize.eastU)]
+                    [Math.floorMod(-pos.getY(), directionTileSize.eastV)]
+        );
 
-        if (side == Direction.UP) {
-            float u0 = upSprite.getU0() + upUStep * Math.floorMod(pos.getX(), directionTileSize.upU);
-            float v0 = upSprite.getV0() + upVStep * Math.floorMod(pos.getZ() - 1, directionTileSize.upV);
+        else if (side == Direction.SOUTH) return List.of(
+                southQuads
+                    [Math.floorMod(pos.getX(), directionTileSize.southU)]
+                    [Math.floorMod(-pos.getY(), directionTileSize.southV)]
+        );
 
-            quads.add(QuadBaker.upQuad(
-                    upSprite,
-                    true,
-                    0,
-                    useAmbientOcclusion(),
-                    0xFFFFFFFF,
-                    u0, u0 + upUStep,
-                    v0, v0 + upVStep
-            ));
-        }
+        else if (side == Direction.WEST) return List.of(
+                westQuads
+                    [Math.floorMod(pos.getZ() - 1, directionTileSize.westU)]
+                    [Math.floorMod(-pos.getY(), directionTileSize.westV)]
+        );
 
-        if (side == Direction.NORTH) {
-            float u0 = northSprite.getU0() + northUStep * Math.floorMod(-pos.getX() - 1, directionTileSize.northU);
-            float v0 = northSprite.getV0() + northVStep * Math.floorMod(-pos.getY(), directionTileSize.northV);
-
-            quads.add(QuadBaker.northQuad(
-                    northSprite,
-                    true,
-                    0,
-                    useAmbientOcclusion(),
-                    0xFFFFFFFF,
-                    u0, u0 + northUStep,
-                    v0, v0 + northVStep
-            ));
-        }
-
-        if (side == Direction.EAST) {
-            float u0 = eastSprite.getU0() + eastUStep * Math.floorMod(-pos.getZ(), directionTileSize.eastU);
-            float v0 = eastSprite.getV0() + eastVStep * Math.floorMod(-pos.getY(), directionTileSize.eastV);
-
-            quads.add(QuadBaker.eastQuad(
-                    eastSprite,
-                    true,
-                    0,
-                    useAmbientOcclusion(),
-                    0xFFFFFFFF,
-                    u0, u0 + eastUStep,
-                    v0, v0 + eastVStep
-            ));
-        }
-
-        if (side == Direction.SOUTH) {
-            float u0 = southSprite.getU0() + southUStep * Math.floorMod(pos.getX(), directionTileSize.southU);
-            float v0 = southSprite.getV0() + southVStep * Math.floorMod(-pos.getY(), directionTileSize.southV);
-
-            quads.add(QuadBaker.southQuad(
-                    southSprite,
-                    true,
-                    0,
-                    useAmbientOcclusion(),
-                    0xFFFFFFFF,
-                    u0, u0 + southUStep,
-                    v0, v0 + southVStep
-            ));
-        }
-
-        if (side == Direction.WEST) {
-            float u0 = westSprite.getU0() + westUStep * Math.floorMod(pos.getZ() - 1, directionTileSize.westU);
-            float v0 = westSprite.getV0() + westVStep * Math.floorMod(-pos.getY(), directionTileSize.westV);
-
-            quads.add(QuadBaker.westQuad(
-                    westSprite,
-                    true,
-                    0,
-                    useAmbientOcclusion(),
-                    0xFFFFFFFF,
-                    u0, u0 + westUStep,
-                    v0, v0 + westVStep
-            ));
-        }
-
-        return quads;
+        return List.of();
     }
 }

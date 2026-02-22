@@ -50,10 +50,10 @@ public class QuadBaker {
     }
 
     public final static float[] DOWN_VERTICES = {
-            1, 0, 0,
-            1, 0, 1,
             0, 0, 1,
             0, 0, 0,
+            1, 0, 0,
+            1, 0, 1,
     };
 
     public final static float[] DOWN_NORMAL = {0, -1, 0};
