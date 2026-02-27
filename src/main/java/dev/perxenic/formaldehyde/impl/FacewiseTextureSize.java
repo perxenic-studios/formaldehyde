@@ -64,4 +64,17 @@ public class FacewiseTextureSize {
             throw new JsonParseException("Property 'west' is not present or not a valid integer", e);
         }
     }
+
+    public JsonObject toJson() {
+        var json = new JsonObject();
+
+        json.addProperty("down", down);
+        json.addProperty("up", up);
+        json.addProperty("north", north);
+        json.addProperty("east", east);
+        json.addProperty("south", south);
+        json.addProperty("west", west);
+
+        return json;
+    }
 }
