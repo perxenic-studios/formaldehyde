@@ -1,6 +1,5 @@
 package dev.perxenic.formaldehyde.impl;
 
-import dev.perxenic.formaldehyde.helper.QuadBaker;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -17,7 +16,6 @@ import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
 import java.util.List;
 
 @ParametersAreNonnullByDefault
@@ -38,7 +36,7 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
     private final BakedQuad[][] southQuads;
     private final BakedQuad[][] westQuads;
 
-    private final DirectionTileSize directionTileSize;
+    private final FacewiseTileDimensions facewiseTileDimensions;
 
     private final ItemOverrides overrides;
 
@@ -53,7 +51,7 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
             BakedQuad[][] eastQuads,
             BakedQuad[][] southQuads,
             BakedQuad[][] westQuads,
-            DirectionTileSize directionTileSize,
+            FacewiseTileDimensions facewiseTileDimensions,
             ItemOverrides overrides
     ) {
         this.useAmbientOcclusion = useAmbientOcclusion;
@@ -67,7 +65,7 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
         this.southQuads = southQuads;
         this.westQuads = westQuads;
 
-        this.directionTileSize = directionTileSize;
+        this.facewiseTileDimensions = facewiseTileDimensions;
 
         this.overrides = overrides;
     }
@@ -121,38 +119,38 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
         if (side == Direction.DOWN) return List.of(
                 downQuads
-                    [Math.floorMod(pos.getX(), directionTileSize.downU)]
-                    [Math.floorMod(-pos.getZ(), directionTileSize.downV)]
+                    [Math.floorMod(pos.getX(), facewiseTileDimensions.downU)]
+                    [Math.floorMod(-pos.getZ(), facewiseTileDimensions.downV)]
             );
 
         else if (side == Direction.UP) return List.of(
                 upQuads
-                    [Math.floorMod(pos.getX(), directionTileSize.upU)]
-                    [Math.floorMod(pos.getZ() - 1, directionTileSize.upV)]
+                    [Math.floorMod(pos.getX(), facewiseTileDimensions.upU)]
+                    [Math.floorMod(pos.getZ() - 1, facewiseTileDimensions.upV)]
         );
 
         else if (side == Direction.NORTH) return List.of(
                 northQuads
-                    [Math.floorMod(-pos.getX() - 1, directionTileSize.northU)]
-                    [Math.floorMod(-pos.getY(), directionTileSize.northV)]
+                    [Math.floorMod(-pos.getX() - 1, facewiseTileDimensions.northU)]
+                    [Math.floorMod(-pos.getY(), facewiseTileDimensions.northV)]
         );
 
         else if (side == Direction.EAST) return List.of(
                 eastQuads
-                    [Math.floorMod(-pos.getZ(), directionTileSize.eastU)]
-                    [Math.floorMod(-pos.getY(), directionTileSize.eastV)]
+                    [Math.floorMod(-pos.getZ(), facewiseTileDimensions.eastU)]
+                    [Math.floorMod(-pos.getY(), facewiseTileDimensions.eastV)]
         );
 
         else if (side == Direction.SOUTH) return List.of(
                 southQuads
-                    [Math.floorMod(pos.getX(), directionTileSize.southU)]
-                    [Math.floorMod(-pos.getY(), directionTileSize.southV)]
+                    [Math.floorMod(pos.getX(), facewiseTileDimensions.southU)]
+                    [Math.floorMod(-pos.getY(), facewiseTileDimensions.southV)]
         );
 
         else if (side == Direction.WEST) return List.of(
                 westQuads
-                    [Math.floorMod(pos.getZ() - 1, directionTileSize.westU)]
-                    [Math.floorMod(-pos.getY(), directionTileSize.westV)]
+                    [Math.floorMod(pos.getZ() - 1, facewiseTileDimensions.westU)]
+                    [Math.floorMod(-pos.getY(), facewiseTileDimensions.westV)]
         );
 
         return List.of();

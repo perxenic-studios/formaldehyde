@@ -10,7 +10,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 @FieldsAreNonnullByDefault
-public class DirectionTextureSize {
+public class FacewiseTextureSize {
     public final int down;
     public final int up;
     public final int north;
@@ -18,7 +18,7 @@ public class DirectionTextureSize {
     public final int south;
     public final int west;
 
-    public DirectionTextureSize(int down, int up, int north, int east, int south, int west) {
+    public FacewiseTextureSize(int down, int up, int north, int east, int south, int west) {
         this.down = down;
         this.up = up;
         this.north = north;
@@ -27,7 +27,7 @@ public class DirectionTextureSize {
         this.west = west;
     }
 
-    public DirectionTextureSize(JsonObject object) throws JsonParseException {
+    public FacewiseTextureSize(JsonObject object) throws JsonParseException {
         try {
             down = object.getAsJsonPrimitive("down").getAsInt();
         } catch (Exception e) {

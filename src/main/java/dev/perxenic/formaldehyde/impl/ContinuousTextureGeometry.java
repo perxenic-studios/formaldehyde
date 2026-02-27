@@ -16,12 +16,12 @@ import java.util.function.Function;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ContinuousTextureGeometry implements IUnbakedGeometry<ContinuousTextureGeometry> {
-    private final DirectionTextureSize directionTextureSize;
-    private final DirectionTileSize directionTileSize;
+    private final FacewiseTextureSize facewiseTextureSize;
+    private final FacewiseTileDimensions facewiseTileDimensions;
 
-    public ContinuousTextureGeometry(DirectionTextureSize directionTextureSize, DirectionTileSize directionTileSize) {
-        this.directionTextureSize = directionTextureSize;
-        this.directionTileSize = directionTileSize;
+    public ContinuousTextureGeometry(FacewiseTextureSize facewiseTextureSize, FacewiseTileDimensions facewiseTileDimensions) {
+        this.facewiseTextureSize = facewiseTextureSize;
+        this.facewiseTileDimensions = facewiseTileDimensions;
     }
 
     @Override
@@ -32,48 +32,48 @@ public class ContinuousTextureGeometry implements IUnbakedGeometry<ContinuousTex
                 context.useBlockLight(),
                 spriteGetter.apply(context.getMaterial("particle")),
                 bakeFaceQuads(
-                        directionTileSize.downU, directionTileSize.downV,
+                        facewiseTileDimensions.downU, facewiseTileDimensions.downV,
                         spriteGetter.apply(context.getMaterial("down")),
-                        directionTextureSize.down,
+                        facewiseTextureSize.down,
                         context.useAmbientOcclusion(),
                         QuadBaker::downQuad
                 ),
                 bakeFaceQuads(
-                        directionTileSize.upU, directionTileSize.upV,
+                        facewiseTileDimensions.upU, facewiseTileDimensions.upV,
                         spriteGetter.apply(context.getMaterial("up")),
-                        directionTextureSize.up,
+                        facewiseTextureSize.up,
                         context.useAmbientOcclusion(),
                         QuadBaker::upQuad
                 ),
                 bakeFaceQuads(
-                        directionTileSize.northU, directionTileSize.northV,
+                        facewiseTileDimensions.northU, facewiseTileDimensions.northV,
                         spriteGetter.apply(context.getMaterial("north")),
-                        directionTextureSize.north,
+                        facewiseTextureSize.north,
                         context.useAmbientOcclusion(),
                         QuadBaker::northQuad
                 ),
                 bakeFaceQuads(
-                        directionTileSize.eastU, directionTileSize.eastV,
+                        facewiseTileDimensions.eastU, facewiseTileDimensions.eastV,
                         spriteGetter.apply(context.getMaterial("east")),
-                        directionTextureSize.east,
+                        facewiseTextureSize.east,
                         context.useAmbientOcclusion(),
                         QuadBaker::eastQuad
                 ),
                 bakeFaceQuads(
-                        directionTileSize.southU, directionTileSize.southV,
+                        facewiseTileDimensions.southU, facewiseTileDimensions.southV,
                         spriteGetter.apply(context.getMaterial("south")),
-                        directionTextureSize.south,
+                        facewiseTextureSize.south,
                         context.useAmbientOcclusion(),
                         QuadBaker::southQuad
                 ),
                 bakeFaceQuads(
-                        directionTileSize.westU, directionTileSize.westV,
+                        facewiseTileDimensions.westU, facewiseTileDimensions.westV,
                         spriteGetter.apply(context.getMaterial("west")),
-                        directionTextureSize.west,
+                        facewiseTextureSize.west,
                         context.useAmbientOcclusion(),
                         QuadBaker::westQuad
                 ),
-                directionTileSize,
+                facewiseTileDimensions,
                 overrides
         );
     }

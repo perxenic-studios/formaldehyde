@@ -29,8 +29,8 @@ public class ContinuousTextureGeometryLoader implements IGeometryLoader<Continuo
             throw new JsonParseException("Property 'tile_size' was not a json object");
 
         return new ContinuousTextureGeometry(
-                new DirectionTextureSize(jsonObject.get("texture_size").getAsJsonObject()),
-                new DirectionTileSize(jsonObject.get("tile_size").getAsJsonObject())
+                new FacewiseTextureSize(jsonObject.get("texture_size").getAsJsonObject()),
+                new FacewiseTileDimensions(jsonObject.get("tile_size").getAsJsonObject())
         );
     }
 }

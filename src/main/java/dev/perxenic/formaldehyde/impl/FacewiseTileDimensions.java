@@ -3,7 +3,7 @@ package dev.perxenic.formaldehyde.impl;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class DirectionTileSize {
+public class FacewiseTileDimensions {
     public final int downU;
     public final int downV;
 
@@ -22,7 +22,7 @@ public class DirectionTileSize {
     public final int westU;
     public final int westV;
 
-    public DirectionTileSize(
+    public FacewiseTileDimensions(
             int downU, int downV,
             int upU, int upV,
             int northU, int northV,
@@ -49,7 +49,7 @@ public class DirectionTileSize {
         this.westV = westV;
     }
 
-    public DirectionTileSize(JsonObject object) throws JsonParseException {
+    public FacewiseTileDimensions(JsonObject object) throws JsonParseException {
         try {
             var down = object.getAsJsonArray("down");
             downU = down.get(0).getAsInt();
