@@ -15,18 +15,18 @@ import java.util.function.Function;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ContinuousTextureGeometry implements IUnbakedGeometry<ContinuousTextureGeometry> {
+public class LargeTextureGeometry implements IUnbakedGeometry<LargeTextureGeometry> {
     private final FacewiseTextureSize facewiseTextureSize;
     private final FacewiseTileDimensions facewiseTileDimensions;
 
-    public ContinuousTextureGeometry(FacewiseTextureSize facewiseTextureSize, FacewiseTileDimensions facewiseTileDimensions) {
+    public LargeTextureGeometry(FacewiseTextureSize facewiseTextureSize, FacewiseTileDimensions facewiseTileDimensions) {
         this.facewiseTextureSize = facewiseTextureSize;
         this.facewiseTileDimensions = facewiseTileDimensions;
     }
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
-        return new ContinuousTextureDynamicModel(
+        return new LargeTextureDynamicModel(
                 context.useAmbientOcclusion(),
                 context.isGui3d(),
                 context.useBlockLight(),

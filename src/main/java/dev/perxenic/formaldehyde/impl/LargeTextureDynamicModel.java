@@ -20,7 +20,7 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
+public class LargeTextureDynamicModel implements IDynamicBakedModel {
     private static final ModelProperty<BlockPos> BLOCK_POS_PROPERTY = new ModelProperty<>();
 
     private final boolean useAmbientOcclusion;
@@ -40,7 +40,7 @@ public class ContinuousTextureDynamicModel implements IDynamicBakedModel {
 
     private final ItemOverrides overrides;
 
-    public ContinuousTextureDynamicModel(
+    public LargeTextureDynamicModel(
             boolean useAmbientOcclusion,
             boolean isGui3d,
             boolean usesBlockLight,

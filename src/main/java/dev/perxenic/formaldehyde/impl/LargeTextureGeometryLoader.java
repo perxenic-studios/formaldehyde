@@ -13,22 +13,26 @@ import static dev.perxenic.formaldehyde.Formaldehyde.fhLoc;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ContinuousTextureGeometryLoader implements IGeometryLoader<ContinuousTextureGeometry> {
+public class LargeTextureGeometryLoader implements IGeometryLoader<LargeTextureGeometry> {
 
-    public static final ContinuousTextureGeometryLoader INSTANCE = new ContinuousTextureGeometryLoader();
+    public static final LargeTextureGeometryLoader INSTANCE = new LargeTextureGeometryLoader();
 
-    public static final ResourceLocation ID = fhLoc("continuous_texture");
+    public static final ResourceLocation ID = fhLoc("large_texture");
 
-    private ContinuousTextureGeometryLoader() {}
+    private LargeTextureGeometryLoader() {}
 
     @Override
-    public ContinuousTextureGeometry read(JsonObject jsonObject, JsonDeserializationContext context) throws JsonParseException {
+    public LargeTextureGeometry read(JsonObject jsonObject, JsonDeserializationContext context) throws JsonParseException {
+        if (!jsonObject.has("texture_size"))
+            throw new JsonParseException("Property 'texture_size' was not present");
+        if (!jsonObject.has("tile_size"))
+            throw new JsonParseException("Property 'tile_size' was not present");
         if (!jsonObject.get("texture_size").isJsonObject())
             throw new JsonParseException("Property 'texture_size' was not a json object");
         if (!jsonObject.get("tile_size").isJsonObject())
             throw new JsonParseException("Property 'tile_size' was not a json object");
 
-        return new ContinuousTextureGeometry(
+        return new LargeTextureGeometry(
                 new FacewiseTextureSize(jsonObject.get("texture_size").getAsJsonObject()),
                 new FacewiseTileDimensions(jsonObject.get("tile_size").getAsJsonObject())
         );

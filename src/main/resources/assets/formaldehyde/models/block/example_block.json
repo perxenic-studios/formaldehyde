@@ -1,5 +1,5 @@
 {
-  "loader": "formaldehyde:continuous_texture",
+  "loader": "formaldehyde:large_texture",
   "parent": "minecraft:block/block",
     "textures": {
       "particle": "minecraft:block/smooth_stone",

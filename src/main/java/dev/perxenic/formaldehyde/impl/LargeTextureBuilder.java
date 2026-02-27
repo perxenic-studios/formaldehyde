@@ -10,10 +10,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ContinuousTextureBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
-    public ContinuousTextureBuilder(BlockModelBuilder parent, ExistingFileHelper existingFileHelper) {
+public class LargeTextureBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
+    public LargeTextureBuilder(BlockModelBuilder parent, ExistingFileHelper existingFileHelper) {
         super(
-                ContinuousTextureGeometryLoader.ID,
+                LargeTextureGeometryLoader.ID,
                 parent,
                 existingFileHelper,
                 false
