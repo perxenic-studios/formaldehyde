@@ -1,7 +1,9 @@
 package dev.perxenic.formaldehyde.impl;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import dev.perxenic.formaldehyde.helper.JsonHelper;
 
 public class FacewiseTileDimensions {
     public final int downU;
@@ -97,5 +99,18 @@ public class FacewiseTileDimensions {
         } catch (Exception e) {
             throw new JsonParseException("Property 'west' is not present or not a valid integer array", e);
         }
+    }
+
+    public JsonObject toJson() {
+        var json = new JsonObject();
+
+        json.add("down", JsonHelper.intArray(downU, downV));
+        json.add("up", JsonHelper.intArray(upU, upV));
+        json.add("north", JsonHelper.intArray(northU, northV));
+        json.add("east", JsonHelper.intArray(eastU, eastV));
+        json.add("south", JsonHelper.intArray(southU, southV));
+        json.add("west", JsonHelper.intArray(westU, westV));
+
+        return json;
     }
 }
